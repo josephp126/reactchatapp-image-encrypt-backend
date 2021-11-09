@@ -1,3 +1,3 @@
 module.exports = {
-    secret: "yacht-secret-key"
+    secret: "onechain-secret-key"
   };
