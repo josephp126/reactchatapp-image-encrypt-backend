@@ -12,7 +12,11 @@ const User = mongoose.model(
         ref: "Role",
       },
     ],
-  })
+    avatar: {
+      type: String,
+      default: ""
+    },
+  },  { timestamps: true, toObject: { virtuals: true, }, toJSON: { virtuals: true } })
 );
 
 module.exports = User;
