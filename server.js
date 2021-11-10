@@ -4,6 +4,11 @@ const cors = require("cors");
 const dbConfig = require('./app/config/db.config')
 const app = express();
 
+var http = require("http");
+var https = require("https");
+var fs = require("fs");
+const { Server } = require('socket.io');
+
 var corsOptions = {
   // origin: "http://localhost:8081",
   origin: "http://127.0.0.1:3000",
@@ -16,6 +21,8 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/public', express.static(__dirname + '/app/public'));
 
 const db = require("./app/models");
 const Role = db.role;
