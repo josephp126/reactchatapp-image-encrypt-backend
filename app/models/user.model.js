@@ -12,6 +12,10 @@ const User = mongoose.model(
         ref: "Role",
       },
     ],
+    avatar: {
+      type: String,
+      default: ""
+    },
   })
 );
 
