@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use('/public', express.static(__dirname + '/app/public'));
+
 const db = require("./app/models");
 const Role = db.role;
 
