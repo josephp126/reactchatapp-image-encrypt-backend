@@ -16,7 +16,7 @@ const User = mongoose.model(
       type: String,
       default: ""
     },
-  })
+  },  { timestamps: true, toObject: { virtuals: true, }, toJSON: { virtuals: true } })
 );
 
 module.exports = User;
