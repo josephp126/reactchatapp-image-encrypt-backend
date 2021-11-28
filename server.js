@@ -11,7 +11,9 @@ const { Server } = require('socket.io');
 
 var corsOptions = {
   // origin: "http://localhost:8081",
-  origin: "http://127.0.0.1:3000",
+  // origin: "http://127.0.0.1:3000",
+  // origin: "http://192.168.101.109:3005",
+  origin: "http://13.52.238.150",
 };
 
 app.use(cors(corsOptions));
