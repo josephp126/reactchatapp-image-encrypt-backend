@@ -30,7 +30,8 @@ const db = require("./app/models");
 const Role = db.role;
 
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect(`mongodb://newadmin:password@13.52.238.150:27017/?authSource=admin&readPreference=primary&directConnection=true&ssl=false`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
