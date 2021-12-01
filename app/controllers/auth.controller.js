@@ -8,7 +8,7 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
   const randColor = () => {
-    let color = Math.floor(Math.random()*16777215).toString(16);
+    let color = Math.floor(Math.random() * 16777215).toString(16);
     color = "#" + color;
     return color
   }
@@ -48,18 +48,19 @@ exports.signup = (req, res) => {
             var token = jwt.sign({ id: user.id }, config.secret, {
               expiresIn: 86400 // 24 hours
             });
-      
+
             var authorities = [];
-      
+
             for (let i = 0; i < user_role_names.length; i++) {
               authorities.push("ROLE_" + user_role_names[i].name.toUpperCase());
             }
             res.status(200).send({
+              ...user._doc,
               id: user._id,
               username: user.username,
               email: user.email,
               roles: authorities,
-              accessToken: token
+              accessToken: token,
             });
           });
         }
@@ -81,18 +82,19 @@ exports.signup = (req, res) => {
           var token = jwt.sign({ id: user.id }, config.secret, {
             expiresIn: 86400 // 24 hours
           });
-    
+
           var authorities = [];
           console.log("_______________", user.roles)
           for (let i = 0; i < user.roles.length; i++) {
-            authorities.push("ROLE_USER" );
+            authorities.push("ROLE_USER");
           }
           res.status(200).send({
+            ...user._doc,
             id: user._id,
             username: user.username,
             email: user.email,
             roles: authorities,
-            accessToken: token
+            accessToken: token,
           });
         });
       });
@@ -137,6 +139,7 @@ exports.signin = (req, res) => {
         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
       }
       res.status(200).send({
+        ...user._doc,
         id: user._id,
         username: user.username,
         email: user.email,
