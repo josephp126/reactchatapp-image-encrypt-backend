@@ -11,5 +11,5 @@ module.exports = function (app) {
   });
 
   app.post('/api/message', [authJwt.verifyToken], controller.createMessage)
-  app.get('/api/message/:userId', [authJwt.verifyToken], controller.getMessage)
+  app.get('/api/message/:friendId', [authJwt.verifyToken], controller.getMessage)
 };
