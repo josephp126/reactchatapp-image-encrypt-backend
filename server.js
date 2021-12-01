@@ -2,7 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dbConfig = require('./app/config/db.config')
+const appConfig = require('./app/config/app.config')
 const app = express();
+require('dotenv').config();
 
 var http = require("http");
 var https = require("https");
@@ -10,10 +12,7 @@ var fs = require("fs");
 const { Server } = require('socket.io');
 
 var corsOptions = {
-  // origin: "http://localhost:8081",
-  // origin: "http://127.0.0.1:3000",
-  // origin: "http://192.168.101.109:3005",
-  origin: "http://13.52.238.150",
+  origin: appConfig.APP_URL,
 };
 
 app.use(cors(corsOptions));
@@ -31,7 +30,7 @@ const Role = db.role;
 
 db.mongoose
   // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-  .connect(`mongodb://newadmin:password@13.52.238.150:27017/?authSource=admin&readPreference=primary&directConnection=true&ssl=false`, {
+  .connect( appConfig.ENVIRONMENT == 'local' ? `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.COLLECTION}`  :  dbConfig.URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
