@@ -17,13 +17,13 @@ exports.newFriend = async (req, res) => {
 
 //get friends of a user
 exports.getFriends = async (req, res) => {
-    try{
+    try {
         const friends = await Friends.find({
             friends: { $in: [req.params.userId] },
-        })
+        }).populate("friend", "-id -_id -__v -email -password -roles -createdAt -updatedAt").select("-__v");
         res.status(200).json(friends);
     }
-    catch(err){
+    catch (err) {
         res.status(500).json(err);
     }
 }

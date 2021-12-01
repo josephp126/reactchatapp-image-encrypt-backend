@@ -6,6 +6,10 @@ const Friends = mongoose.model(
         friends: {
             type: Array,
         },
+        friend: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
         unReadMessageCnt: {
             type: Number,
             default: 0

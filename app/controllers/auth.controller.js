@@ -7,10 +7,17 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
+  const randColor = () => {
+    let color = Math.floor(Math.random()*16777215).toString(16);
+    color = "#" + color;
+    return color
+  }
+
   const user = new User({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    avatarColor: randColor(),
   });
 
   user.save((err, user) => {

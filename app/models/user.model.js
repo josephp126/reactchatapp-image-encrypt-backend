@@ -16,6 +16,7 @@ const User = mongoose.model(
       type: String,
       default: ""
     },
+    avatarColor: String,
   },  { timestamps: true, toObject: { virtuals: true, }, toJSON: { virtuals: true } })
 );
 
