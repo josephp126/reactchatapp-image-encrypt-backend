@@ -31,13 +31,29 @@ exports.signup = (req, res) => {
           }
 
           user.roles = roles.map(role => role._id);
+          let user_role_names = roles.map(role => role.name);
           user.save(err => {
             if (err) {
               res.status(500).send({ message: err });
               return;
             }
 
-            res.send({ message: "User was registered successfully!" });
+            var token = jwt.sign({ id: user.id }, config.secret, {
+              expiresIn: 86400 // 24 hours
+            });
+      
+            var authorities = [];
+      
+            for (let i = 0; i < user_role_names.length; i++) {
+              authorities.push("ROLE_" + user_role_names[i].name.toUpperCase());
+            }
+            res.status(200).send({
+              id: user._id,
+              username: user.username,
+              email: user.email,
+              roles: authorities,
+              accessToken: token
+            });
           });
         }
       );
@@ -55,7 +71,22 @@ exports.signup = (req, res) => {
             return;
           }
 
-          res.send({ message: "User was registered successfully!" });
+          var token = jwt.sign({ id: user.id }, config.secret, {
+            expiresIn: 86400 // 24 hours
+          });
+    
+          var authorities = [];
+          console.log("_______________", user.roles)
+          for (let i = 0; i < user.roles.length; i++) {
+            authorities.push("ROLE_USER" );
+          }
+          res.status(200).send({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            roles: authorities,
+            accessToken: token
+          });
         });
       });
     }
