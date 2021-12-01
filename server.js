@@ -13,6 +13,7 @@ const { Server } = require('socket.io');
 
 var corsOptions = {
   origin: appConfig.APP_URL,
+  // origin: 'http://192.168.101.109',
 };
 
 app.use(cors(corsOptions));
@@ -72,10 +73,13 @@ function initial() {
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Yacht application." });
+  res.json({ message: "Welcome to OneChain Chat application." });
 });
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
+require('./app/routes/chat.routes')(app);
+require('./app/routes/friends.routes')(app);
+require('./app/routes/messages.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

@@ -1,0 +1,26 @@
+@jwt = ""
+@host = 192.168.101.110
+@port = 3000
+
+// Login User
+POST http://{{host}}:{{port}}/api/auth/signin
+Content-Type: application/json
+
+'{\"email\":\"tommy@test.com\",\"password\":\"123123123\"}'
+//Response body
+//{
+//   "id": "1",
+//   "token": "1234567890"
+//}
+
+// script part
+@{
+const pattern = /"accessToken": "(.*)"/;
+jwt = $response.body.match(pattern, $1);
+}
+
+// Twitter Seciton
+
+// GET list of Twitter Users, use jwt parsed from previous call
+GET http://{{host}}:{{port}}/api/test/user
+Authorization: {{jwt}}

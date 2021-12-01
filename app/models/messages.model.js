@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
-const Chat = mongoose.model(
-  "Chat",
+const Message = mongoose.model(
+  "Message",
   new mongoose.Schema({
-    chatId: String,
+    friendId: String,
     sender: {
         type: String
     },
@@ -11,8 +11,8 @@ const Chat = mongoose.model(
         type: String,
         default: 'text'
     },
-    message: String,
+    content: String,
 },  { timestamps: true, toObject: { virtuals: true, }, toJSON: { virtuals: true } })
 );
 
-module.exports = Chat;
+module.exports = Message;
