@@ -5,8 +5,8 @@ const Message = db.messages;
 exports.createMessage = async (req, res) => {
     const newMessage = new Message(req.body);
     try {
-        const savedNewMessage = await newMessage.save();
-        res.status(200).json(savedNewMessage);
+        await newMessage.save();
+        res.status(200).json({msg: 'success'});
     }
     catch (err) {
         res.status(500).json(err);
@@ -18,7 +18,7 @@ exports.getMessage = async (req, res) => {
     try {
         const messages = await Message.find({
             friendId: req.params.friendId,
-        });
+        }).populate("sender", " -__v -email -password -roles -createdAt -updatedAt").select("-__v").sort({ 'createdAt': -1 });
         res.status(200).json(messages);
     }
     catch (err) {

@@ -5,7 +5,8 @@ const Message = mongoose.model(
   new mongoose.Schema({
     friendId: String,
     sender: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     type: {
         type: String,
