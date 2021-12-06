@@ -29,14 +29,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/app/public'));
 
 const server = http.createServer(app);
-const io = socketIo(server, {cors: corsOptions});
+const io = socketIo(server, { cors: corsOptions });
 
 const db = require("./app/models");
 const Role = db.role;
 
 db.mongoose
   // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-  .connect( appConfig.ENVIRONMENT == 'local' ? `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.COLLECTION}`  :  dbConfig.URL, {
+  .connect(appConfig.ENVIRONMENT == 'local' ? `mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.COLLECTION}` : dbConfig.URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -77,9 +77,43 @@ function initial() {
 }
 
 //socket IO
-io.on('connection', socket => {
-  console.log("a user connected.");
-  // io.emit("welcome", "Hello, Welcome to websocket")
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) && users.push({userId, socketId});
+}
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId );
+}
+
+const getUser = () => {
+  return users.find((user) => user.userId === userId);
+} 
+
+io.on('connection', (socket) => {
+  //add user
+  socket.on("addUser", userId => {
+    addUser(userId, socket.id);
+    io.emit("getUsers", users);
+  })
+
+  //send message
+  socket.on("sendMessage", ({senderId, receiverId, text}) => {
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit("getMessage", {
+      senderId,
+      text,
+    })
+  })
+
+  //disconnect user
+  socket.on("disconnect", () => {
+    console.log("REMOVING...");
+    removeUser(socket.id);
+    io.emit("getUsers", users);
+  })
 });
 
 // simple route
