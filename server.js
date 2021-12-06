@@ -9,7 +9,9 @@ require('dotenv').config();
 var http = require("http");
 var https = require("https");
 var fs = require("fs");
-const { Server } = require('socket.io');
+const socketIo = require("socket.io");
+
+
 
 var corsOptions = {
   origin: appConfig.APP_URL,
@@ -25,6 +27,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/public', express.static(__dirname + '/app/public'));
+
+const server = http.createServer(app);
+const io = socketIo(server, {cors: corsOptions});
 
 const db = require("./app/models");
 const Role = db.role;
@@ -71,6 +76,12 @@ function initial() {
   });
 }
 
+//socket IO
+io.on('connection', socket => {
+  console.log("a user connected.");
+  // io.emit("welcome", "Hello, Welcome to websocket")
+});
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to OneChain Chat application." });
@@ -83,6 +94,6 @@ require('./app/routes/messages.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
