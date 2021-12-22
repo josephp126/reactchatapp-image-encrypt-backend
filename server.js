@@ -94,18 +94,19 @@ const getUser = () => {
 
 io.on('connection', (socket) => {
   //add user
-  socket.on("addUser", userId => {
-    addUser(userId, socket.id);
-    io.emit("getUsers", users);
-  })
+  // socket.on("addUser", userId => {
+  //   addUser(userId, socket.id);
+  //   io.emit("getUsers", users);
+  // })
 
   //send message
-  socket.on("sendMessage", ({senderId, receiverId, text}) => {
-    const user = getUser(receiverId);
-    io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text,
-    })
+  socket.on("sendMessage", (pushMessage) => {
+    // const user = getUser(receiverId);
+    // io.to(user.socketId).emit("getMessage", {
+    //   senderId,
+    //   text,
+    // })
+    io.emit('getMessage',pushMessage)
   })
 
   //disconnect user
