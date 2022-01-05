@@ -106,6 +106,7 @@ io.on('connection', (socket) => {
     //   senderId,
     //   text,
     // })
+    console.log(pushMessage.content)
     io.emit('getMessage',pushMessage)
   })
 
