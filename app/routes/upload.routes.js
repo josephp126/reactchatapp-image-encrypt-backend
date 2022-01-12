@@ -10,5 +10,5 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/upload/image", [store.array('images', 12)], controller.uploadImage);
+    app.post("/api/upload/image", store.array('images', 12), controller.uploadImage);
 };

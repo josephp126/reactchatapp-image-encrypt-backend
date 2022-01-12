@@ -1,7 +1,7 @@
 //get messages
 exports.uploadImage = async (req, res) => {
     const files = res.req.files;
-    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++", res.req.files);
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++", res);
     // console.log(res)
     if (!files) {
         const error = new Error('Please choose files')
